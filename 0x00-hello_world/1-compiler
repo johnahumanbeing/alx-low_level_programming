@@ -1,0 +1,2 @@
+#!/bin/bash
+gcc -save-temps $CFILE -o $CFILE.o
