@@ -7,17 +7,21 @@
  */
 int main(int argc, char *argv[])
 {
-	if (argc == 3)
-	{
-		int sum;
+	int i, num, sum = 0;
 
-		sum = atoi(argv[1]) + atoi(argv[2]);
-		printf("%d\n", sum);
-	}
-	else
+	for (i = 1; i < argc; i++)
 	{
-		printf("Error\n");
-		return (1);
+		for (num = 0; argv[i][num]; num++)
+		{
+			if (argv[i][num] < '0' || argv[i][num] > '9')
+			{
+				printf("Error\n");
+				return (1);
+			}
+		}
+		sum += atoi(argv[i]);
 	}
+	printf("%d\n", sum);
+
 	return (0);
 }
