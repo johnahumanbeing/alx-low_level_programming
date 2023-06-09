@@ -3,13 +3,13 @@
 /**
  *main -prints its name
  *
- *@argc:argument count
+ *@argcUnused:argument count
  *@argv:argument vol
  *Return:nothing
  */
 
-int main(int argcUnused __attribute__((unused)), char* argv[])
+int main(int argcUnused __attribute__((unused)), char *argv[])
 {
-	printf("argc = %s\n", *argv);
+	printf("%s\n", *argv);
 	return (0);
 }
