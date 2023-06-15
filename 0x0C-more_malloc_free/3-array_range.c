@@ -10,16 +10,20 @@
 int *array_range(int min, int max)
 {
 	int *integer;
-	int a, length = 0;
+	int a, element_no, size;
 
 	if (min > max)
 		return (NULL);
-	length = max - min + 1;
-	integer = malloc(length * sizeof(int));
+	element_no = max - min + 1;
+	size = element_no * sizeof(int);
+	integer = malloc(size);
+
 	if (integer == NULL)
 		return (NULL);
-	for (a = 0; a < length; a++)
-		*(integer + 1) = min++;
+	for (a = 0; a < element_no; a++)
+	{
+		integer[a] = min + a;
+	}
 	return (integer);
-	/* this must work */
+	/* this must work,my second try */
 }
