@@ -1,9 +1,9 @@
-#include "lists.h"
+#include <stdio.h>
 
 void beat_rabbit(void) __attribute__((constructor));
-
 /**
  * beat_meat - prints a message before main is executed
+ * Return: nothing
  */
 
 void beat_rabbit(void)
