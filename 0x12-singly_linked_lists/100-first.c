@@ -2,7 +2,7 @@
 
 void beat_rabbit(void) __attribute__((constructor));
 /**
- * beat_meat - prints a message before main is executed
+ * beat_rabbit - prints a message before main is executed
  * Return: nothing
  */
 
