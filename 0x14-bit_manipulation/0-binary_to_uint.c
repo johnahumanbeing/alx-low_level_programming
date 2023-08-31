@@ -23,6 +23,15 @@ unsigned int binary_to_uint(const char *b)
 		uint += b[i] - '0';
 		i++;
 	}
+	/* checking the remainder of chars that are not 0 or 1 */
+	while (b[i] != '\0')
+	{
+		if (b[i] != '0' && b[i] != '1')
+		{
+			return (0);
+		}
+		i++;
+	}
 
 	return (uint);
 }
