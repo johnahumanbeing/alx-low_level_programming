@@ -13,13 +13,13 @@
 
 void parse_arguments(int argc, char *argv[]);
 
-int open_source_file(char *filename);
+int open_file(char *filename);
 
-int open_dest_file(char *filename);
+int open_dest(char *filename);
 
-void read_from_source(int source_fd, int dest_fd);
+void read_from(int source_fd, int dest_fd);
 
-void write_to_dest(int dest_fd, char *buffer, ssize_t read_bytes);
+void write_dest(int dest_fd, char *buffer, ssize_t read_bytes);
 
 void close_files(int source_fd, int dest_fd);
 

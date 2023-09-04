@@ -2,11 +2,13 @@
 
 /* fixing the error by spliting the main function to smaller functions */
 
+#define BUFFER_SIZE 1024
+
 void parse_arguments(int argc, char *argv[]);
-int open_source_file(char *filename);
-int open_dest_file(char *filename);
-void read_from_source(int source_fd, int dest_fd);
-void write_to_dest(int dest_fd, char *buffer, ssize_t read_bytes);
+int open_source(char *filename);
+int open_dest(char *filename);
+void read_source(int source_fd, int dest_fd);
+void write_dest(int dest_fd, char *buffer, ssize_t read_bytes);
 void close_files(int source_fd, int dest_fd);
 
 /**
@@ -22,13 +24,13 @@ int main(int argc, char *argv[])
 	char buffer[BUFFER_SIZE];
 	mode_t mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH;
 
-	parse_args(argc, argv);
+	parse_arguments(argc, argv);
 
-	source_fd = open_source_file(argv[1]);
+	source_fd = open_source(argv[1]);
 
-	dest_fd = open_dest_file(argv[2], mode);
+	dest_fd = open_dest(argv[2], mode);
 
-	read_from_source(source_fd, dest_fd, buffer);
+	read_source(source_fd, dest_fd, buffer);
 
 	close_files(source_fd, dest_fd);
 
@@ -36,11 +38,11 @@ int main(int argc, char *argv[])
 }
 
 /**
- * parse_args - parses arguments through main
+ * parse_arguments - parses arguments through main
  * @argc: argument count
  * @argv: argument vector
  */
-void parse_args(int argc, char *argv[])
+void parse_arguments(int argc, char *argv[])
 {
 	if (argc != 3)
 	{
@@ -50,15 +52,33 @@ void parse_args(int argc, char *argv[])
 }
 
 /**
- * open_source_file - the source of the file
+ * open_source - the source of the file
  * @filename: name of the file
  * Return: dest
  */
-int open_source_file(char *filename)
+int open_source(char *filename)
 {
 	int source_fd = open(filename, O_RDONLY);
 
 	if (source_fd == -1)
+	{
+		dprintf(STDERR_FILENO, "Error: can't write to %s\n", filename);
+		exit(98);
+	}
+	return (source_fd);
+}
+
+/**
+ * open_dest - used to open file in write mode
+ * @filename : name of the file
+ * @mode: mode to use
+ * Return: dest
+ */
+int open_dest(char *filename, mode_t mode)
+{
+	int dest_fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, mode);
+
+	if (dest_fd == -1)
 	{
 		dprintf(STDERR_FILENO, "Error: can't write to %s\n", filename);
 		exit(99);
@@ -67,18 +87,18 @@ int open_source_file(char *filename)
 }
 
 /**
- * read_from_source - reads source of the file
+ * read_source - reads source of the file
  * @source_fd: source file
  * @dest_fd: destination file
  * @buffer: the buffer
  */
-void read_from_source(int source_fd, int dest_fd, char *buffer)
+void read_source(int source_fd, int dest_fd, char *buffer)
 {
 	ssize_t read_bytes, written_bytes;
 
 	while ((read_bytes = read(source_fd, buffer, BUFFER_SIZE)) > 0)
 	{
-		write_to_dest(dest_fd, buffer, read_bytes);
+		write_dest(dest_fd, buffer, read_bytes);
 	}
 
 	if (read_bytes == -1)
@@ -89,12 +109,12 @@ void read_from_source(int source_fd, int dest_fd, char *buffer)
 }
 
 /**
- * write_to_dest - writes to the written bytes
+ * write_dest - writes to the written bytes
  * @buffer: the buffer
  * @dest_fd: destination file
  * @read_bytes: reader of bytes
  */
-void write_to_dest(int dest_fd, char *buffer, ssize_t read_bytes)
+void write_dest(int dest_fd, char *buffer, ssize_t read_bytes)
 {
 	ssize_t written_bytes;
 
