@@ -4,10 +4,10 @@
 
 #define BUFFER_SIZE 1024
 
-void parse_arguments(int argc, char *argv[]);
+void parse_arguments(int argc);
 int open_source(char *filename);
-int open_dest(char *filename);
-void read_source(int source_fd, int dest_fd);
+int open_dest(char *filename, mode_t mode);
+void read_source(int source_fd, int dest_fd, char *buffer);
 void write_dest(int dest_fd, char *buffer, ssize_t read_bytes);
 void close_files(int source_fd, int dest_fd);
 
@@ -24,7 +24,7 @@ int main(int argc, char *argv[])
 	char buffer[BUFFER_SIZE];
 	mode_t mode = S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH;
 
-	parse_arguments(argc, argv);
+	parse_arguments(argc);
 
 	source_fd = open_source(argv[1]);
 
@@ -40,9 +40,8 @@ int main(int argc, char *argv[])
 /**
  * parse_arguments - parses arguments through main
  * @argc: argument count
- * @argv: argument vector
  */
-void parse_arguments(int argc, char *argv[])
+void parse_arguments(int argc)
 {
 	if (argc != 3)
 	{
@@ -94,7 +93,7 @@ int open_dest(char *filename, mode_t mode)
  */
 void read_source(int source_fd, int dest_fd, char *buffer)
 {
-	ssize_t read_bytes, written_bytes;
+	ssize_t read_bytes;
 
 	while ((read_bytes = read(source_fd, buffer, BUFFER_SIZE)) > 0)
 	{

@@ -11,13 +11,13 @@
 #include <sys/stat.h>
 #define BUF_SIZE 1024
 
-void parse_arguments(int argc, char *argv[]);
+void parse_arguments(int argc);
 
-int open_file(char *filename);
+int open_source(char *filename);
 
-int open_dest(char *filename);
+int open_dest(char *filename, mode_t mode);
 
-void read_from(int source_fd, int dest_fd);
+void read_source(int source_fd, int dest_fd, char *buffer);
 
 void write_dest(int dest_fd, char *buffer, ssize_t read_bytes);
 
