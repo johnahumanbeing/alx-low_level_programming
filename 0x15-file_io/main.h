@@ -9,7 +9,9 @@
 #include <fcntl.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#define BUF_SIZE 1024
+#include <string.h>
+
+#define BUFFER_SIZE 1024
 
 void parse_arguments(int argc);
 
