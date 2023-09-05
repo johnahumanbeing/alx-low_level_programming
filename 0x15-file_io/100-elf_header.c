@@ -59,11 +59,15 @@ int main(int argc, char *argv[])
  */
 void print_magic(const Elf64_Ehdr *header)
 {
+	int i;
+
 	printf("Magic:	");
-	for (int i = 0; i < EI_NIDENT; i++)
+
+	for (i = 0; i < EI_NIDENT; i++)
 	{
 		printf("%02x ", header->e_ident[i]);
 	}
+
 	printf("\n");
 }
 
@@ -73,22 +77,24 @@ void print_magic(const Elf64_Ehdr *header)
  */
 void print_class(const Elf64_Ehdr *header)
 {
-	printf("Class:	");
+	const char *class_str;
+
 	switch (header->e_ident[EI_CLASS])
 	{
 		case ELFCLASSNONE:
-			printf("none\n");
+			class_str = "none";
 			break;
 		case ELFCLASS32:
-			printf("ELF32\n");
+			class_str = "ELF32";
 			break;
 		case ELFCLASS64:
-			printf("ELF64\n");
+			class_str = "ELF64";
 			break;
 		default:
-			printf("<unknown: %x>\n", header->e_ident[EI_CLASS]);
+			class_str = "<unknown>";
 			break;
 	}
+	printf("Class:	%s\n", class_str);
 }
 
 /**
@@ -97,22 +103,24 @@ void print_class(const Elf64_Ehdr *header)
  */
 void print_data(const Elf64_Ehdr *header)
 {
-	printf("Data:	");
+	const char *data_str;
+
 	switch (header->e_ident[EI_DATA])
 	{
 		case ELFDATANONE:
-			printf("none\n");
+			data_str = "none";
 			break;
 		case ELFDATA2LSB:
-			printf("2's complement, little endian\n");
+			data_str = "2's complement, little endian";
 			break;
 		case ELFDATA2MSB:
-			printf("2's complement, big endian\n");
+			data_str = "2's complement, big endian";
 			break;
 		default:
-			printf("<unkown:>\n%", header->e_ident[EI_DATA]);
+			data_str = "<unkown>";
 			break;
 	}
+	printf("Data:	%s\n", data_str);
 }
 
 /**
@@ -121,7 +129,7 @@ void print_data(const Elf64_Ehdr *header)
  */
 void print_version(const Elf64_Ehdr *header)
 {
-	printf("Version:  %d\n", header->e_ident[EI_VERSION]);
+	printf("Version:  %d (current)\n", header->e_ident[EI_VERSION]);
 }
 
 /**
@@ -130,43 +138,45 @@ void print_version(const Elf64_Ehdr *header)
  */
 void print_osabi(const Elf64_Ehdr *header)
 {
-	printf("OS/ABI:  ");
+	const char *osabi_str;
+
 	switch (header->e_ident[EI_OSABI])
 	{
 		case ELFOSABI_SYSV:
-			printf("UNIX System V ABI\n");
+			osabi_str = "UNIX - System V";
 			break;
 		case ELFOSABI_HPUX:
-			printf("HP-UX ABI\n");
+			osabi_str = "HP-UX";
 			break;
 		case ELFOSABI_NETBSD:
-			printf("NetBSD ABI\n");
+			osabi_str = "NetBSD";
 			break;
 		case ELFOSABI_LINUX:
-			printf("Linux ABI\n");
+			osabi_str = "Linux";
 			break;
 		case ELFOSABI_SOLARIS:
-			printf("Solaris ABI\n");
+			osabi_str = "Solaris";
 			break;
 		case ELFOSABI_IRIX:
-			printf("IRIX ABI\n");
+			osabi_str = "IRIX";
 			break;
 		case ELFOSABI_FREEBSD:
-			printf("FreeBSD ABI\n");
+			osabi_str = "FreeBSD";
 			break;
 		case ELFOSABI_TRU64:
-			printf("TRU64 UNIX ABI\n");
+			osabi_str = "TRU64 UNIX";
 			break;
 		case ELFOSABI_ARM:
-			printf("ARM architecture ABI\n");
+			osabi_str = "ARM architecture";
 			break;
 		case ELFOSABI_STANDALONE:
-			printf("Standalone (embedded) ABI\n");
+			osabi_str = "Standalone (embedded)";
 			break;
 		default:
-			printf("<unknown: %x>\n", header->e_ident[EI_OSABI]);
+			osabi_str = "<unknown>";
 			break;
 	}
+	printf("OS/ABI:	%s\n", osabi_str);
 }
 
 /**
@@ -176,7 +186,7 @@ void print_osabi(const Elf64_Ehdr *header)
 void print_abiversion(const Elf64_Ehdr *header)
 {
 
-	printf("ABI Version:	%d\n ", header->e_ident[EI_ABIVERSION]);
+	printf("ABI Version:	%d\n", header->e_ident[EI_ABIVERSION]);
 }
 
 /**

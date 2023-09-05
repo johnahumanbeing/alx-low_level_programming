@@ -10,6 +10,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <string.h>
+#include <elf.h>
 
 #define BUFFER_SIZE 1024
 
