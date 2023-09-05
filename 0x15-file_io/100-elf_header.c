@@ -1,5 +1,19 @@
 #include "main.h"
 
+void print_magic(const Elf64_Ehdr *header);
+void print_class(const Elf64_Ehdr *header);
+void print_data(const Elf64_Ehdr *header);
+void print_version(const Elf64_Ehdr *header);
+void Print_osabi(const Elf64_Ehdr *header);
+void print_abiversion(const Elf64_Ehdr *header);
+void print_type(const Elf64_Ehdr *header);
+
+/**
+ * main- displays info contained in the ELF header at the start of an ELF File
+ * @argc: argument count
+ * @argv: argument vector
+ * Return: zero
+ */
 int main(int argc, char *argv[])
 {
 	int fd;
@@ -21,27 +35,46 @@ int main(int argc, char *argv[])
 
 	if (read(fd, &header, sizeof(header)) != sizeof(header))
 	{
-		dprintf(STDERR_FILENO, "Error: Can't read ELF header from file %s\n", argv[1]);
+		dprintf(STDERR_FILENO, "Error: can't read ELF header from file %s\n",
+				argv[1]);
 		exit(98);
 	}
 
-	if (strncmp((char *)header.e_ident, ELFMAG, SELFMAG) != 0)
-	{
-		dprintf(STDERR_FILENO, "Error: File %s is not an ELF file\n", argv[1]);
-		exit(98);
-	}
+	print_magic(&header);
+	print_class(&header);
+	print_data(&header);
+	print_version(&header);
+	print_osabi(&header);
+	print_abiversion(&header);
+	print_type(&header);
 
-	printf("Magic:  ");
+	close(fd);
 
+	return (0);
+}
+
+/**
+ * print_magic - prints the magic info
+ * @header:pointer to the file
+ */
+void print_magic(const Elf64_Ehdr *header)
+{
+	printf("Magic:	");
 	for (int i = 0; i < EI_NIDENT; i++)
 	{
-		printf("%02x ", header.e_ident[i]);
+		printf("%02x ", header->e_ident[i]);
 	}
 	printf("\n");
+}
 
-	printf("Class:                             ");
-
-	switch (header.e_ident[EI_CLASS])
+/**
+ * print_class- prinnts the class info
+ * @header: pointer to the file
+ */
+void print_class(const Elf64_Ehdr *header)
+{
+	printf("Class:	");
+	switch (header->e_ident[EI_CLASS])
 	{
 		case ELFCLASSNONE:
 			printf("none\n");
@@ -53,12 +86,19 @@ int main(int argc, char *argv[])
 			printf("ELF64\n");
 			break;
 		default:
-			printf("<unknown: %x>\n", header.e_ident[EI_CLASS]);
+			printf("<unknown: %x>\n", header->e_ident[EI_CLASS]);
 			break;
 	}
+}
 
-	printf("Data:                              ");
-	switch (header.e_ident[EI_DATA])
+/**
+ * print_data- prints the data info
+ * @header:the pointer to the file
+ */
+void print_data(const Elf64_Ehdr *header)
+{
+	printf("Data:	");
+	switch (header->e_ident[EI_DATA])
 	{
 		case ELFDATANONE:
 			printf("none\n");
@@ -70,14 +110,28 @@ int main(int argc, char *argv[])
 			printf("2's complement, big endian\n");
 			break;
 		default:
-			printf("unknown: %x>\n", header.e_ident[EI_DATA]);
+			printf("<unkown:>\n%", header->e_ident[EI_DATA]);
 			break;
 	}
+}
 
-	printf("Version:                           %d\n", header.e_ident[EI_VERSION]);
+/**
+ * print_version - prints the  current version of the os
+ * @header: pointer to the file
+ */
+void print_version(const Elf64_Ehdr *header)
+{
+	printf("Version:  %d\n", header->e_ident[EI_VERSION]);
+}
 
-	printf("OS/ABI:                            ");
-	switch (header.e_ident[EI_OSABI])
+/**
+ * print_osabi - prints the abi of the operating system
+ * @header: pointer to the file
+ */
+void print_osabi(const Elf64_Ehdr *header)
+{
+	printf("OS/ABI:  ");
+	switch (header->e_ident[EI_OSABI])
 	{
 		case ELFOSABI_SYSV:
 			printf("UNIX System V ABI\n");
@@ -110,14 +164,29 @@ int main(int argc, char *argv[])
 			printf("Standalone (embedded) ABI\n");
 			break;
 		default:
-			printf("<unknown: %x>\n", header.e_ident[EI_OSABI]);
+			printf("<unknown: %x>\n", header->e_ident[EI_OSABI]);
 			break;
 	}
+}
 
-	printf("ABI Version:                  %d\n ", header.e_ident[EI_ABIVERSION]);
+/**
+ * print_abiversion - prints the abi version
+ * @header: pointer to the file
+ */
+void print_abiversion(const Elf64_Ehdr *header)
+{
 
-	printf("Type:                              ");
-	switch (header.e_type)
+	printf("ABI Version:	%d\n ", header->e_ident[EI_ABIVERSION]);
+}
+
+/**
+ * print_type - prints the type of file
+ * @header: pointer to the file
+ */
+void print_type(const Elf64_Ehdr *header)
+{
+	printf("Type:	");
+	switch (header->e_type)
 	{
 		case ET_NONE:
 			printf("NONE (No file type)\n");
@@ -135,15 +204,12 @@ int main(int argc, char *argv[])
 			printf("CORE (Core file)\n");
 			break;
 		default:
-			printf("<unknown: %x>\n", header.e_type);
+			printf("<unknown: %x>\n", header->e_type);
 			break;
 	}
 
-	printf("Entry point address:               %lx\n", header.e_entry);
+	printf("Entry point address:	%lx\n", header->e_entry);
 
-	printf("ELF header size:                   %d (bytes)\n", header.e_ehsize);
+	printf("ELF header size:	%d(bytes)\n", header->e_ehsize);
 
-	close(fd);
-
-	return (0);
 }

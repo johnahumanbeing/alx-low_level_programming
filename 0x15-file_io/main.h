@@ -13,6 +13,20 @@
 
 #define BUFFER_SIZE 1024
 
+void print_magic(const Elf64_Ehdr *header);
+
+void print_class(const Elf64_Ehdr *header);
+
+void print_data(const Elf64_Ehdr *header);
+
+void print_version(const Elf64_Ehdr *header);
+
+void print_osabi(const Elf64_Ehdr *header);
+
+void print_abiversion(const Elf64_Ehdr *header);
+
+void print_type(const Elf64_Ehdr *header);
+
 void parse_arguments(int argc);
 
 int open_source(char *filename);
