@@ -1,4 +1,5 @@
 #include "main.h"
+#include <elf.h>
 
 void print_magic(const Elf64_Ehdr *header);
 void print_class(const Elf64_Ehdr *header);
