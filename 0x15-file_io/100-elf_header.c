@@ -40,6 +40,7 @@ int main(int argc, char *argv[])
 		exit(98);
 	}
 
+	printf("ELF Header:\n");
 	print_magic(&header);
 	print_class(&header);
 	print_data(&header);
@@ -61,7 +62,7 @@ void print_magic(const Elf64_Ehdr *header)
 {
 	int i;
 
-	printf("Magic:	");
+	printf("  Magic:   ");
 
 	for (i = 0; i < EI_NIDENT; i++)
 	{
@@ -94,7 +95,7 @@ void print_class(const Elf64_Ehdr *header)
 			class_str = "<unknown>";
 			break;
 	}
-	printf("Class:	%s\n", class_str);
+	printf("  Class:                             %s\n", class_str);
 }
 
 /**
@@ -120,7 +121,7 @@ void print_data(const Elf64_Ehdr *header)
 			data_str = "<unkown>";
 			break;
 	}
-	printf("Data:	%s\n", data_str);
+	printf("  Data:                              %s\n", data_str);
 }
 
 /**
@@ -129,7 +130,8 @@ void print_data(const Elf64_Ehdr *header)
  */
 void print_version(const Elf64_Ehdr *header)
 {
-	printf("Version:  %d (current)\n", header->e_ident[EI_VERSION]);
+	printf("  Version:                           %d (current)\n",
+		header->e_ident[EI_VERSION]);
 }
 
 /**
@@ -176,7 +178,7 @@ void print_osabi(const Elf64_Ehdr *header)
 			osabi_str = "<unknown>";
 			break;
 	}
-	printf("OS/ABI:	%s\n", osabi_str);
+	printf("  OS/ABI:                            %s\n", osabi_str);
 }
 
 /**
@@ -186,7 +188,8 @@ void print_osabi(const Elf64_Ehdr *header)
 void print_abiversion(const Elf64_Ehdr *header)
 {
 
-	printf("ABI Version:	%d\n", header->e_ident[EI_ABIVERSION]);
+	printf("  ABI Version:                       %d\n",
+			header->e_ident[EI_ABIVERSION]);
 }
 
 /**
@@ -195,31 +198,31 @@ void print_abiversion(const Elf64_Ehdr *header)
  */
 void print_type(const Elf64_Ehdr *header)
 {
-	printf("Type:	");
+	const char *type_str;
+
 	switch (header->e_type)
 	{
 		case ET_NONE:
-			printf("NONE (No file type)\n");
+			type_str = "NONE (No file type)";
 			break;
 		case ET_REL:
-			printf("REL (Relocatable file)\n");
+			type_str = "REL (Relocatable file)";
 			break;
 		case ET_EXEC:
-			printf("EXEC (Executable file)\n");
+			type_str = "EXEC (Executable file)";
 			break;
 		case ET_DYN:
-			printf("DYN (Shared object file)\n");
+			type_str = "DYN (Shared object file)";
 			break;
 		case ET_CORE:
-			printf("CORE (Core file)\n");
+			type_str = "CORE (Core file)";
 			break;
 		default:
-			printf("<unknown: %x>\n", header->e_type);
+			type_str = "<unknown>";
 			break;
 	}
 
-	printf("Entry point address:	%lx\n", header->e_entry);
-
-	printf("ELF header size:	%d(bytes)\n", header->e_ehsize);
+	printf("  Type:                              %s\n", type_str);
+	printf("  Entry point address:               %lx\n", header->e_entry);
 
 }
