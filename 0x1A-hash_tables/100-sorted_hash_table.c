@@ -53,7 +53,7 @@ shash_node_t *add_node_start_shash(shash_node_t **h, const char *key,
 		}
 		curr_node = curr_node->next;
 	}
-	/* we add a new node to the list */
+	/* adding a new node to the list */
 	curr_node = malloc(sizeof(shash_node_t));
 	if (curr_node == NULL)
 		return (NULL);
