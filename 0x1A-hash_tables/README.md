@@ -1,8 +1,11 @@
 C - Hash tables(Algorithm,Data structure)
+
 All your files will be compiled on Ubuntu 20.04 LTS using gcc, using the options -Wall -Werror -Wextra -pedantic -std=gnu89
+
 The prototypes of all functions  are in the header file called hash_tables.h
 
 compilation process:
+
 i: 0-hash_table_create.c; gcc -Wall -pedantic -Werror -Wextra -std=gnu89 0-main.c 0-hash_table_create.c -o a ( also use valgrind)
 
 ii: 1-djb2.c; gcc -Wall -pedantic -Werror -Wextra -std=gnu89 1-main.c 1-djb2.c -o b
