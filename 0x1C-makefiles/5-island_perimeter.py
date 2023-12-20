@@ -4,6 +4,9 @@ This module runs with the island_perimeter function
 """
 
 def water_amt_isl(grid, hor, ver):
+    """
+    returns amount of water around a cell
+    """
     amt = 0
 
     if hor <= 0 or not grid[hor - 1][ver]:
